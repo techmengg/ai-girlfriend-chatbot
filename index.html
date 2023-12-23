@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Girlfriend Chatbot</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-container {
+            background-color: #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        #chat-header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chat-messages {
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        #user-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #send-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-header">Amane's Wife</div>
+        <div id="chat-messages"></div>
+        <div id="user-input">
+            <input type="text" id="message-input" placeholder="Type your message..." onkeydown="handleKeyDown(event)">
+            <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        // Handle "Enter" key press
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+
+        function sendMessage() {
+            const userMessage = messageInput.value.trim();
+            if (userMessage === '') return;
+
+            appendMessage('You', userMessage);
+            messageInput.value = '';
+
+            // For fun, you can add some predefined responses
+            setTimeout(() => {
+                const aiResponse = getAIResponse(userMessage);
+                appendMessage('AI Girlfriend', aiResponse);
+            }, 500);
+        }
+
+        function appendMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getAIResponse(userMessage) {
+            // You can add more responses here for a more dynamic chat experience
+            const responses = [
+                "Aw, that's sweet!",
+                "Tell me more...",
+                "I love talking to you!",
+                "You're the best!",
+                "I miss you!",
+                "You're on my mind.",
+                "I'm always here for you."
+            ];
+
+            const randomIndex = Math.floor(Math.random() * responses.length);
+            return responses[randomIndex];
+        }
+    </script>
+</body>
+</html>
+
