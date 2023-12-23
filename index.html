@@ -21,8 +21,9 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: 400px;
-            max-width: 100%;
+            width: 90%; /* Adjusted for better mobile responsiveness */
+            max-width: 400px; /* Maximum width for larger screens */
+            margin: auto; /* Center the chat container */
         }
 
         #chat-header {
@@ -40,6 +41,7 @@
 
         #user-input {
             display: flex;
+            flex-wrap: wrap; /* Allow flex items to wrap to the next line on smaller screens */
             justify-content: space-between;
             align-items: center;
             padding: 10px;
@@ -47,6 +49,7 @@
 
         #message-input {
             flex: 1;
+            margin-bottom: 10px; /* Add space between the input and button on smaller screens */
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
