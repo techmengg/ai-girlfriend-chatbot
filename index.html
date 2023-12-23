@@ -4,59 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Girlfriend Chatbot</title>
+
+    <link rel="shortcut icon" href="./images/makima.ico" type="image/x-icon">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: black;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
-
+    
+        body::before {
+            content: "";
+            background: url('./images/kanaarimadrifting.gif') fixed;
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 1; /* Adjust the opacity to make it dimmer */
+            filter: grayscale(10%) brightness(20%); /* Adjust the grayscale and brightness for a darker effect */
+        }
+    
         #chat-container {
-            background-color: #ddd;
+            background-color: rgba(71, 70, 70, 0.8);
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: 90%; /* Adjusted for better mobile responsiveness */
-            max-width: 400px; /* Maximum width for larger screens */
-            margin: auto; /* Center the chat container */
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+            height: 45vh; /* Adjusted to take up the full viewport height */
+            display: flex;
+            flex-direction: column;
         }
-
+    
         #chat-header {
-            background-color: #3498db;
+            background-color: #000000;
             color: #fff;
             padding: 10px;
             text-align: center;
         }
-
+    
         #chat-messages {
+            flex: 1; /* Take up remaining space */
             padding: 10px;
-            height: 200px;
             overflow-y: auto;
+            color: #dfdcdc; /* Set the text color to white */
         }
-
+    
         #user-input {
             display: flex;
-            flex-wrap: wrap; /* Allow flex items to wrap to the next line on smaller screens */
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             padding: 10px;
         }
-
+    
         #message-input {
+            font-size: 16px; /* Set the font size to a specific value */
             flex: 1;
-            margin-bottom: 10px; /* Add space between the input and button on smaller screens */
+            margin-bottom: 10px;
+            margin-right: 10px;
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #000000;
             border-radius: 4px;
+            -ms-text-size-adjust: 100%; /* Prevent IE from zooming the input */
+            -webkit-text-size-adjust: 100%; /* Prevent Webkit browsers from zooming the input */
         }
-
+    
         #send-button {
-            background-color: #3498db;
+            background-color: #000000;
             color: #fff;
             padding: 8px 12px;
             border: none;
@@ -64,6 +91,7 @@
             cursor: pointer;
         }
     </style>
+    
 </head>
 <body>
     <div id="chat-container">
@@ -79,40 +107,40 @@
         const chatMessages = document.getElementById('chat-messages');
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
-
+        let conversationContext = {};
+    
         // Handle "Enter" key press
         function handleKeyDown(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
-
+    
         sendButton.addEventListener('click', sendMessage);
-
+    
         function sendMessage() {
             const userMessage = messageInput.value.trim();
             if (userMessage === '') return;
-
+    
             appendMessage('You', userMessage);
             messageInput.value = '';
-
-            // For fun, you can add some predefined responses
+    
             setTimeout(() => {
                 const aiResponse = getAIResponse(userMessage);
-                appendMessage('AI Girlfriend', aiResponse);
+                appendMessage('Wife', aiResponse);
             }, 500);
         }
-
+    
         function appendMessage(sender, message) {
             const messageElement = document.createElement('div');
             messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
+    
         function getAIResponse(userMessage) {
-            // You can add more responses here for a more dynamic chat experience
-            const responses = [
+            // Basic responses
+            const basicResponses = [
                 "Aw, that's sweet!",
                 "Tell me more...",
                 "I love talking to you!",
@@ -121,11 +149,23 @@
                 "You're on my mind.",
                 "I'm always here for you."
             ];
-
-            const randomIndex = Math.floor(Math.random() * responses.length);
-            return responses[randomIndex];
+    
+            // Check for specific keywords in user's input
+            if (userMessage.toLowerCase().includes('love')) {
+                return "I love you too!";
+            } else if (userMessage.toLowerCase().includes('weather')) {
+                return "I heard the weather is nice today.";
+            }
+    
+            // Add more sophisticated logic based on conversationContext or other factors
+    
+            // If no specific response, return a random basic response
+            const randomIndex = Math.floor(Math.random() * basicResponses.length);
+            return basicResponses[randomIndex];
         }
-    </script>
+    </script>    
 </body>
 </html>
+
+
 
