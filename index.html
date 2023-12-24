@@ -33,19 +33,44 @@
             filter: grayscale(10%) brightness(20%); /* Adjust the grayscale and brightness for a darker effect */
         }
     
-        #chat-container {
+        #main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Set the height to full viewport height */
+            margin-left: 20px; /* Adjusted margin */
+        }
+    
+        #chat-container, #info-box {
             background-color: rgba(71, 70, 70, 0.8);
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             width: 90%;
             max-width: 800px;
-            margin: auto;
+            margin: 10px; /* Adjusted margin */
             position: relative;
             z-index: 1;
-            height: 45vh; /* Adjusted to take up the full viewport height */
             display: flex;
             flex-direction: column;
+        }
+    
+        #chat-container {
+            height: 45vh; /* Adjusted to take up the full viewport height */
+        }
+    
+        #info-box {
+            max-width: 150px;
+            height: 40vh; /* Adjusted height */
+            display: flex;
+            flex-direction: column;
+            margin: 10px; /* Adjusted margin */
+            padding: 15px; /* Added padding */
+            align-items: center; /* Center content horizontally */
+        }
+    
+        #info-box h2, #info-box p {
+            margin-bottom: 10px; /* Adjusted margin */
         }
     
         #chat-header {
@@ -66,7 +91,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* Align items to the top */
             padding: 10px;
         }
     
@@ -82,7 +107,7 @@
             -webkit-text-size-adjust: 100%; /* Prevent Webkit browsers from zooming the input */
         }
     
-        #send-button {
+        .action-button {
             background-color: #000000;
             color: #fff;
             padding: 8px 12px;
@@ -91,81 +116,170 @@
             cursor: pointer;
         }
     </style>
-    
 </head>
+
 <body>
-    <div id="chat-container">
-        <div id="chat-header">Amane's Wife</div>
-        <div id="chat-messages"></div>
-        <div id="user-input">
-            <input type="text" id="message-input" placeholder="Type your message..." onkeydown="handleKeyDown(event)">
-            <button id="send-button" onclick="sendMessage()">Send</button>
+    <div id="main-container">
+        <div id="info-box">
+            <h2>Keywords!</h2>
+            <p>1. Love</p>
+            <p>2. Weather</p>
+            <p>3. Food</p>
+            <p>4. Hobby</p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p>Make sure to spell the keywords in a sentence correctly!</p>
+
+        </div>
+
+        <div id="chat-container">
+            <div id="chat-header">Yandere Wife</div>
+            <div id="chat-messages"></div>
+            <div id="user-input">
+                <input type="text" id="message-input" placeholder="Type your message..." onkeydown="handleKeyDown(event)">
+                <button id="send-button" onclick="sendMessage()" class="action-button">Send</button>
+                <button id="clear-button" onclick="clearChat()" class="action-button">Clear Chat</button>
+                <button id="view-history-button" onclick="viewChatHistory()" class="action-button">View Chat History</button>
+            </div>
         </div>
     </div>
 
     <script>
         const chatMessages = document.getElementById('chat-messages');
         const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
         let conversationContext = {};
-    
-        // Handle "Enter" key press
+
         function handleKeyDown(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
-    
-        sendButton.addEventListener('click', sendMessage);
-    
+
         function sendMessage() {
             const userMessage = messageInput.value.trim();
             if (userMessage === '') return;
-    
+
             appendMessage('You', userMessage);
             messageInput.value = '';
-    
+
+            showTypingIndicator();
+
             setTimeout(() => {
                 const aiResponse = getAIResponse(userMessage);
+                hideTypingIndicator();
                 appendMessage('Wife', aiResponse);
+                updateLocalStorage();
             }, 500);
         }
-    
+
         function appendMessage(sender, message) {
             const messageElement = document.createElement('div');
             messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-    
-        function getAIResponse(userMessage) {
-            // Basic responses
-            const basicResponses = [
-                "Aw, that's sweet!",
-                "Tell me more...",
-                "I love talking to you!",
-                "You're the best!",
-                "I miss you!",
-                "You're on my mind.",
-                "I'm always here for you."
-            ];
-    
-            // Check for specific keywords in user's input
-            if (userMessage.toLowerCase().includes('love')) {
-                return "I love you too!";
-            } else if (userMessage.toLowerCase().includes('weather')) {
-                return "I heard the weather is nice today.";
+
+        function clearChat() {
+            const confirmation = confirm("Are you sure you want to clear the chat?");
+            if (confirmation) {
+                chatMessages.innerHTML = '';
+                updateLocalStorage();
             }
-    
-            // Add more sophisticated logic based on conversationContext or other factors
-    
-            // If no specific response, return a random basic response
-            const randomIndex = Math.floor(Math.random() * basicResponses.length);
-            return basicResponses[randomIndex];
         }
-    </script>    
+
+        function showTypingIndicator() {
+            const typingIndicator = document.createElement('div');
+            typingIndicator.classList.add('typing-indicator');
+            typingIndicator.textContent = 'Your Wife is typing...';
+            chatMessages.appendChild(typingIndicator);
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.querySelector('.typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function getAIResponse(userMessage) {
+    const loveResponses = [
+        "Heheheheh... I love you too!",
+        "You're my everything! Definetly...",
+        "I love you... I want to squeeze you to death and play with your bod- umm.. nothing.",
+    ];
+
+    const weatherResponses = [
+        "The rain is loud enough that no one will hear what I WILL DO TO YOU! hehe..",
+        "Hmph. Weather????? NOT ME!?",
+        "Look outside. Dumba-- OMG SORRY ILY"
+    ];
+
+    const foodResponses = [
+        "I'm craving you right now.",
+        "MY FAV IS YOU!! *With Rizz*",
+        "My fav food is YOU- Oh... I meant Pineapple Pizza!"
+    ];
+
+    const hobbiesResponses = [
+        "My favourite hobby is stalking you! Hehehe...",
+        "To make sure you wont cheat... or I'll fucking kill you!!",
+        "Hehehehe.... secret."
+    ];
+
+    // Include both "hobbies" and "hobby" in the category
+    const hobbiesKeywords = ['hobbies', 'hobby'];
+
+    // Add more categories and responses as needed
+
+    if (userMessage.toLowerCase().includes('love')) {
+        const randomIndex = Math.floor(Math.random() * loveResponses.length);
+        return loveResponses[randomIndex];
+    } else if (userMessage.toLowerCase().includes('weather')) {
+        const randomIndex = Math.floor(Math.random() * weatherResponses.length);
+        return weatherResponses[randomIndex];
+    } else if (userMessage.toLowerCase().includes('food')) {
+        const randomIndex = Math.floor(Math.random() * foodResponses.length);
+        return foodResponses[randomIndex];
+    } else if (userMessage.toLowerCase().includes('hobby')) {
+        const randomIndex = Math.floor(Math.random() * hobbiesResponses.length);
+        return hobbiesResponses[randomIndex];
+    }
+    // Add more else if statements for additional categories
+
+    // Default response for unrecognized categories
+    return "I'm not sure how to respond to that. Let's talk about something else!";
+}
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedMessages = localStorage.getItem('chatMessages');
+            if (savedMessages) {
+                chatMessages.innerHTML = savedMessages;
+            }
+        });
+
+        function updateLocalStorage() {
+            localStorage.setItem('chatMessages', chatMessages.innerHTML);
+            console.log('Local Storage Updated');
+        }
+
+        function displayChatHistory() {
+            const chatHistory = localStorage.getItem('chatMessages');
+            if (chatHistory) {
+                alert("Chat History:\n" + chatHistory);
+            } else {
+                alert("No chat history available.");
+            }
+        }
+
+        function viewChatHistory() {
+            displayChatHistory();
+        }
+    </script>
 </body>
 </html>
-
-
 
