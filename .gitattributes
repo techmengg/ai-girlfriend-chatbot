@@ -1,2 +1,2 @@
-*.html linguist-detectable=true
-*.javascript linguist-detectable=true
+* linguist-vendored
+*.js linguist-vendored=false
