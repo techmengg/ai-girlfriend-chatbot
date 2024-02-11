@@ -1,6 +1,6 @@
 # ai-girlfriend-chatbot
 for fun's sake.
 
-will make it more advanced later w tensorflow, etc.
+will implement machine learning stuff to make it more advanced later.
 
 code is on the master branch.
